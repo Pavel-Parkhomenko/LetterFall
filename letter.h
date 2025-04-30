@@ -11,12 +11,14 @@ class Letter : public QWidget
 
 public:
   explicit Letter(QString text, QWidget *parent = nullptr);
+  ~Letter();
 
   void startFallAnimation();
   int getEndPositions();
   bool isWillShift = false;
   void updateFallAnimation(int newEndValue);
   QPropertyAnimation *fallAnimation = nullptr;
+  int getRand(int min, int max);
 
   int posY() const {
     return m_posY;

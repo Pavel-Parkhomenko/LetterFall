@@ -2,6 +2,7 @@
 #include <QLabel>
 #include <QFont>
 #include <QDebug>
+#include <QRandomGenerator>
 
 Letter::Letter(QString text, QWidget *parent)
     : QWidget{parent}
@@ -10,13 +11,29 @@ Letter::Letter(QString text, QWidget *parent)
 
 
   label->setText(text);
+  QColor color = QColor::fromHsv(getRand(1, 255), getRand(1, 255), getRand(1, 255));
 
   QFont font = label->font();
-  font.setPointSize(20);
+  font.setPointSize(30);
   label->setFont(font);
+  label->setStyleSheet(QString("color: %1;").arg(color.name()));
 
-  setFixedSize(label->size());
-//  startFallAnimation();
+
+  QFontMetrics metrics(font);
+  QRect textRect = metrics.boundingRect(text);
+  const int padding = 5;
+  setFixedSize(
+      textRect.width() + 2 * padding,
+      textRect.height() + 2 * padding
+      );
+
+  label->setAlignment(Qt::AlignCenter);
+  label->setGeometry(0, 0, width(), height());
+
+}
+
+int Letter::getRand(int min, int max) {
+  return QRandomGenerator::global()->bounded(min, max + 1);
 }
 
 int Letter::getEndPositions() {
@@ -46,4 +63,8 @@ void Letter::startFallAnimation() {
 //  });
 
   fallAnimation->start();//QPropertyAnimation::DeleteWhenStopped
+}
+
+Letter::~Letter() {
+  if(fallAnimation) delete fallAnimation;
 }

@@ -8,11 +8,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
   ui->setupUi(this);
 
-//  setAttribute(Qt::WA_TranslucentBackground);
-  setWindowFlags(windowFlags());
+  setAttribute(Qt::WA_TranslucentBackground);
+  setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
   // Qt::FramelessWindowHint
 
-  resize(300, 600);
+//  resize(600, 600);
   setFocusPolicy(Qt::StrongFocus);  // Разрешаем фокус
   setFocus();
 }
@@ -28,10 +28,14 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-
   if(event->key() == Qt::Key_Backspace) {
     actionBackspace();
     QWidget::keyPressEvent(event);
+    return;
+  }
+
+  if (event->text().isEmpty()) {
+    event->ignore();
     return;
   }
 
@@ -42,7 +46,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
   letter->show();
   letters.push_back(letter);
 
-  posX += 30;
+  posX += 32;
 
   QWidget::keyPressEvent(event);
 }
