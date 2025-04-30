@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QKeyEvent>
+#include <QVector>
+
+#include "letter.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,16 +19,19 @@ class MainWindow : public QMainWindow
   public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
+  void actionBackspace();
+  void checkWidthWindow(Letter *letter);
+  void shiftLetters();
 
   private:
   Ui::MainWindow *ui;
 
 protected:
-  void keyPressEvent(QKeyEvent *event) override {
+  void keyPressEvent(QKeyEvent *event) override;
 
-    qDebug() << event->key();
-
-    QWidget::keyPressEvent(event);
-  }
+private:
+  QVector<Letter*> letters;
+  int posX = 100;
+  int posY = 0;
 };
 #endif // MAINWINDOW_H
